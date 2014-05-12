@@ -2,9 +2,10 @@ Vagrant.configure("2") do |c|
   c.vm.box = "<%= config[:box] %>"
   c.vm.box_url = "<%= config[:box_url] %>"
 
-  puts "http_proxy=<%= config[:http_proxy] %>"
-  puts "Vagrantfile.erb"
+  puts "Using local template Vagrantfile.erb"
+
 <% if config[:http_proxy] %>
+  puts "Vagrantfile.erb : http_proxy set => using proxy and/or caching"
   if Vagrant.has_plugin?("vagrant-cachier")
     # Configure cached packages to be shared between instances of the same base box.
     # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
