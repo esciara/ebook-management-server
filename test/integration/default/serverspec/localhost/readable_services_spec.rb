@@ -1,20 +1,23 @@
 # encoding: UTF-8
 require 'spec_helper'
 
-describe 'Wonderstuff Design' do
+describe 'Ebook Management Server' do
 
-  it 'should install the lighttpd package' do
-    expect(package 'lighttpd').to be_installed
+  describe file('/usr/local/bin/linux-installer.py') do
+    it { should be_file }
+    it { should be_readable }
+    it { should_not be_writable }
+    it { should be_executable.by('owner') }
+    it { should_not be_executable.by('group') }
+    it { should_not be_executable.by('others') }
   end
 
-  it 'should enable and start the lighttpd service' do
-    expect(service 'lighttpd').to be_enabled
-    expect(service 'lighttpd').to be_running
+  describe file('/opt/calibre') do
+    it { should be_directory }
   end
 
-  it 'should render the Wonderstuff Design web page' do
-    expect(file('/var/www/index.html')).to be_file
-    expect(file('/var/www/index.html')).to contain 'Wonderstuff Design is a boutique graphics design agency.'
+  describe file('/opt/calibre/calibre') do
+    it { should be_file }
   end
 
 end
