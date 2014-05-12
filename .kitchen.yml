@@ -36,8 +36,8 @@ suites:
   - name: default
 <% if @in_travis_env %>
     driver:
-      server_name: wonderstuff-server
+      server_name: ebook-management-server
 <% end %>
     run_list:
-      - recipe[wonderstuff::default]
+      - recipe[ebook-management-server::default]
     attributes:
