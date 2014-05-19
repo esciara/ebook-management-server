@@ -12,7 +12,7 @@ recipe 'ebook-management-server', 'Installs/configures an ebook management serve
   supports os
 end
 
-%w(apt locale).each do |cb|
+%w(apt).each do |cb|
   depends cb
 end
 

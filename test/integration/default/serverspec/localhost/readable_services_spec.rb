@@ -9,9 +9,6 @@ describe 'Ebook Management Server' do
         it { should be_installed }
       end
     end
-#    describe file('/etc/default/locale') do
-#      it { should contain 'LC_ALL=' }
-#    end
   end
 
   context 'A calibre user should be created to run calibre' do

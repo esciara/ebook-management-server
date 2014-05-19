@@ -14,8 +14,6 @@ include_recipe 'apt'
   package pkg
 end
 
-include_recipe 'locale'
-
 user 'calibre'
 
 group 'calibre' do
