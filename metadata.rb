@@ -11,8 +11,3 @@ recipe 'ebook-management-server', 'Installs/configures an ebook management serve
 %w(ubuntu).each do |os|
   supports os
 end
-
-%w(apt).each do |cb|
-  depends cb
-end
-

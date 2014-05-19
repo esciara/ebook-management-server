@@ -10,10 +10,6 @@ describe 'ebook-management-server::default' do
     runner.converge('recipe[ebook-management-server::default]')
   end
 
-  it 'runs apt-get update' do
-    expect(chef_run).to include_recipe('apt')
-  end
-  
   %w(libtool fontconfig libxt6 libltdl7).each do |pkg|
     it "installs #{pkg} package" do
       expect(chef_run).to install_package(pkg)

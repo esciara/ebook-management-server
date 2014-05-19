@@ -8,8 +8,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'apt'
-
 %w(libtool fontconfig libxt6 libltdl7).each do |pkg|
   package pkg
 end
