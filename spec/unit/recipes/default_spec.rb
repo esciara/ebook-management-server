@@ -20,10 +20,6 @@ describe 'ebook-management-server::default' do
     end
   end
 
-  it 'sets the locale up properly' do
-    expect(chef_run).to include_recipe('locale')
-  end
-  
   it 'creates a calibre user (with the correct rights?)' do
       expect(chef_run).to create_user('calibre')
   end
