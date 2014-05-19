@@ -15,7 +15,7 @@ describe 'ebook-management-server::default' do
   end
   
   %w(libtool fontconfig libxt6 libltdl7).each do |pkg|
-    it 'installs #{pkg} package' do
+    it "installs #{pkg} package" do
       expect(chef_run).to install_package(pkg)
     end
   end
