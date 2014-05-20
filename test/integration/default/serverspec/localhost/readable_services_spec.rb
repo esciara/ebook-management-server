@@ -17,13 +17,13 @@ describe 'Ebook Management Server' do
       # it should have the correct rights (used to run calibre server without root)'
     end
   end
-  
+
   context 'A calibre group should be created to run calibre' do
     describe group('calibre') do
       it { should exist }
     end
   end
-  
+
   context 'Caliber installation script should be present' do
     describe file('/usr/local/bin/calibre-linux-installer.py') do
       it { should be_file }
@@ -79,15 +79,15 @@ describe 'Ebook Management Server' do
       it { should be_executable }
     end
   end
-  
+
   context 'Caliber should be set up as a service with default settings' do
     describe service('calibre-server') do
       it { should be_enabled }
     end
   end
-  
+
   context 'Caliber should run with the calibre user' do
-    describe process("calibre-server") do
+    describe process('calibre-server') do
       it { should be_running }
       its('user') { should == 'root' }
     end
