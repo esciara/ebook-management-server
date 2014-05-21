@@ -32,22 +32,6 @@ directory '/var/calibre' do
   mode '0644'
 end
 
-cookbook_file "#{Chef::Config[:file_cache_path]}/calibre-empty-library.tar" do
-  source 'calibre-empty-library.tar'
-  owner 'root'
-  group 'root'
-  mode '0444'
-end
-
-execute 'Extracting empty library to calibre data directory /var/calibre' do
-  cwd Chef::Config[:file_cache_path]
-  command <<-COMMAND
-    tar -C /var/calibre -xf calibre-empty-library.tar
-    chown -R calibre /var/calibre
-  COMMAND
-  creates '/var/calibre/Calibre Library'
-end
-
 service 'calibre-server' do
   supports :restart => true
 end
@@ -65,6 +49,6 @@ template '/etc/default/calibre-server' do
   source 'calibre-server.config.erb'
   owner 'root'
   group 'root'
-  mode '0444'
+  mode '0644'
   notifies :restart, 'service[calibre-server]'
 end

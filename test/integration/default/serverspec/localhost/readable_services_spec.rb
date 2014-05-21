@@ -45,24 +45,6 @@ describe 'Ebook Management Server' do
     end
   end
 
-  context 'An empty library should be created' do
-    describe file('/var/calibre') do
-      it { should be_directory }
-    end
-
-    describe file('/var/calibre/Calibre Library') do
-      it { should be_directory }
-    end
-
-    describe file('/var/calibre/Calibre Library/metadata_db_prefs_backup.json') do
-      it { should be_file }
-    end
-
-    describe file('/var/calibre/Calibre Library/metadata.db') do
-      it { should be_file }
-    end
-  end
-
   context 'A default settings file should be created for calibre' do
     describe file('/etc/default/calibre-server') do
       it { should be_file }

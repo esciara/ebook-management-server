@@ -40,26 +40,6 @@ describe 'ebook-management-server::default' do
     )
   end
 
-  it 'copies the empty library tar file to the data directory' do
-    expect(chef_run).to create_cookbook_file("#{Chef::Config[:file_cache_path]}/calibre-empty-library.tar").with(
-      source: 'calibre-empty-library.tar',
-      owner: 'root',
-      group: 'root',
-      mode: '0444'
-    )
-  end
-
-  it 'extracts the empty library to the data directory' do
-    full_command = <<-COMMAND
-    tar -C /var/calibre -xf calibre-empty-library.tar
-    chown -R calibre /var/calibre
-      COMMAND
-    expect(chef_run).to run_execute('Extracting empty library to calibre data directory /var/calibre').with(
-      command: full_command,
-      cwd: Chef::Config[:file_cache_path]
-    )
-  end
-
   it 'creates a service for calibre' do
     resource = chef_run.service('calibre-server')
     expect(resource).to do_nothing
