@@ -36,7 +36,7 @@ describe 'ebook-management-server::default' do
     expect(chef_run).to create_directory('/var/calibre').with(
       owner:  'root',
       group:  'root',
-      mode:   '0644',
+      mode:   '0644'
     )
   end
 
