@@ -1,6 +1,9 @@
 # encoding: UTF-8
 require 'spec_helper'
 
+home_dir = '/home/calibre'
+library_dir = "#{home_dir}/library"
+
 describe 'ebook-management-server::default' do
   let(:chef_run) do
     runner = ChefSpec::Runner.new(
@@ -8,6 +11,10 @@ describe 'ebook-management-server::default' do
     )
     Chef::Config.force_logger true
     runner.converge('recipe[ebook-management-server::default]')
+  end
+
+  it "includes the 'locale' recipe" do
+    expect(chef_run).to include_recipe('locale')
   end
 
   %w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
@@ -23,7 +30,7 @@ describe 'ebook-management-server::default' do
   it 'creates a calibre user' do
     expect(chef_run).to create_user('calibre').with(
       comment: 'User to Run Calibre',
-      home: '/home/calibre',
+      home: home_dir,
       system: true,
       gid: 'calibre'
     )
@@ -53,4 +60,10 @@ describe 'ebook-management-server::default' do
     expect(calibre_script_resource).to notify('service[calibre-server]').to(:enable).delayed
   end
 
+  it 'Adds an empty test book to the library' do
+    expect(chef_run).to run_execute('Adding an empty test book to the library').with(
+      command: "calibredb add --title 'Empty Test Book' --empty test-book --with-library #{library_dir}",
+      user: 'calibre'
+    )
+  end
 end

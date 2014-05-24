@@ -2,6 +2,16 @@
 require 'spec_helper'
 
 describe 'Ebook Management Server' do
+  
+  context 'loale should be set properly' do
+    describe command('echo $LANG') do
+      its(:stdout) { should match 'en_US.utf8' }
+    end
+    describe command('echo $LC_ALL') do
+      its(:stdout) { should match 'en_US.utf8' }
+    end
+  end
+  
   home_dir = '/home/calibre'
   library_dir = "#{home_dir}/library"
 
@@ -86,6 +96,12 @@ describe 'Ebook Management Server' do
     describe process('calibre-server') do
       it { should be_running }
       its('user') { should == 'calibre' }
+    end
+  end
+
+  context 'An empty book should be added to the library' do
+    describe command("calibredb list --with-library #{library_dir}") do
+      its(:stdout) { should match /Empty Test Book/ }
     end
   end
 

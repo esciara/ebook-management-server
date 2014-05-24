@@ -8,6 +8,22 @@
 # All rights reserved - Do Not Redistribute
 #
 
+lang='en_US.utf8'
+lc_all='en_US.utf8'
+language='en_US.utf8'
+
+execute "Update locale" do
+  command "update-locale LANG=#{lang} LC_ALL=#{lc_all} LANGUAGE=#{language}"
+  user 'root'
+  not_if { 
+    locale = IO.read('/etc/default/locale')
+    locale.include?("LANG=#{lang}") && locale.include?("LC_ALL=#{lc_all}") && locale.include?("LANGUAGE=#{language}")
+  }
+end
+
+home_dir = '/home/calibre'
+library_dir = "#{home_dir}/library"
+
 %w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
   package pkg
 end
@@ -16,7 +32,7 @@ group 'calibre'
 
 user 'calibre' do
   comment 'User to Run Calibre'
-  home '/home/calibre'
+  home home_dir
   system true
   supports :manage_home => true
   gid 'calibre'
@@ -41,4 +57,9 @@ cookbook_file '/etc/init.d/calibre-server' do
   mode '0755'
   notifies :enable, 'service[calibre-server]'
   notifies :start, 'service[calibre-server]'
+end
+
+execute 'Adding an empty test book to the library' do
+  command "calibredb add --title 'Empty Test Book' --empty test-book --with-library #{library_dir}"
+  user 'calibre'
 end
