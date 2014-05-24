@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe 'Ebook Management Server' do
   home_dir = '/home/calibre'
-  data_dir = '/home/calibre'
+  library_dir = "#{home_dir}/library"
 
   context 'The environment should be set up' do
     %w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
@@ -52,16 +52,13 @@ describe 'Ebook Management Server' do
     end
   end
 
-  context 'A data directory for calibre owned by calibre:calibre should be created' do
-    describe file(data_dir) do
+  context 'An empty library should be created' do
+    describe file(library_dir) do
       it { should be_directory }
-      it { should be_owned_by 'calibre' }
-      it { should be_grouped_into 'calibre' }
-      it { should be_readable }
-      it { should be_writable.by('owner') }
-      it { should_not be_writable.by('group') }
-      it { should_not be_writable.by('others') }
-      it { should be_executable }
+    end
+
+    describe file("#{library_dir}/metadata.db") do
+      it { should be_file }
     end
   end
 
