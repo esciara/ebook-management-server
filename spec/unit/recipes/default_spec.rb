@@ -4,6 +4,11 @@ require 'spec_helper'
 home_dir = '/home/calibre'
 library_dir = "#{home_dir}/library"
 
+lang = 'en_US.utf8'
+lc_all = 'en_US.utf8'
+language = 'en_US.utf8'
+
+
 describe 'ebook-management-server::default' do
   let(:chef_run) do
     runner = ChefSpec::Runner.new(
@@ -13,8 +18,24 @@ describe 'ebook-management-server::default' do
     runner.converge('recipe[ebook-management-server::default]')
   end
 
-  it "includes the 'locale' recipe" do
-    expect(chef_run).to include_recipe('locale')
+  # Stubbing for test of 'Update Locale' 
+  let(:etc_default_locale_content) do
+    <<-CONTENT
+    LANG="en_US.utf8"
+    LANGUAGE="en_US:"
+    CONTENT
+  end
+
+  before do
+    IO.stub(:read).and_call_original
+    IO.stub(:read).with('/etc/default/locale').and_return(etc_default_locale_content)
+  end
+
+  it 'Sets the system locale properly' do
+    expect(chef_run).to run_execute('Update locale').with(
+      command: "update-locale LANG=#{lang} LC_ALL=#{lc_all} LANGUAGE=#{language}",
+      user: 'root'
+    )
   end
 
   %w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
