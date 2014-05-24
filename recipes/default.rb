@@ -24,7 +24,7 @@ end
 home_dir = '/home/calibre'
 library_dir = "#{home_dir}/library"
 
-%w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
+%w(libtool fontconfig libxt6 libltdl7 vim build-essential ruby1.9.3).each do |pkg|
   package pkg
 end
 
