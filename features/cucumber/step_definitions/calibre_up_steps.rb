@@ -25,5 +25,5 @@ end
 
 Then(/^the page should have the title "(.*?)"$/) do |title|
   page_title = @response.body.match(/<title>(.*?)<\/title>/)[1]
-  expect(page_title).to match(title)
+  expect(page_title).to match title
 end

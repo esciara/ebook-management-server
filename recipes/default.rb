@@ -8,17 +8,17 @@
 # All rights reserved - Do Not Redistribute
 #
 
-lang='en_US.utf8'
-lc_all='en_US.utf8'
-language='en_US.utf8'
+lang = 'en_US.utf8'
+lc_all = 'en_US.utf8'
+language = 'en_US.utf8'
 
-execute "Update locale" do
+execute 'Update locale' do
   command "update-locale LANG=#{lang} LC_ALL=#{lc_all} LANGUAGE=#{language}"
   user 'root'
-  not_if { 
+  not_if do
     locale = IO.read('/etc/default/locale')
     locale.include?("LANG=#{lang}") && locale.include?("LC_ALL=#{lc_all}") && locale.include?("LANGUAGE=#{language}")
-  }
+  end
 end
 
 home_dir = '/home/calibre'
