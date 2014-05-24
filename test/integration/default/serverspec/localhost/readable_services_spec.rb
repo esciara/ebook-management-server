@@ -20,7 +20,7 @@ describe 'Ebook Management Server' do
   end
 
   context 'A calibre user should be created to run calibre with proper homedir' do
-    # TODO check that user is system user
+    # TODO: check that user is system user
     describe user('calibre') do
       it { should exist }
       it { should belong_to_group 'calibre' }
@@ -51,7 +51,7 @@ describe 'Ebook Management Server' do
       it { should be_file }
     end
   end
-  
+
   context 'A data directory for calibre owned by calibre:calibre should be created' do
     describe file(data_dir) do
       it { should be_directory }
