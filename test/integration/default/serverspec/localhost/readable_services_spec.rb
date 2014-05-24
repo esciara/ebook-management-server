@@ -2,25 +2,32 @@
 require 'spec_helper'
 
 describe 'Ebook Management Server' do
+  home_dir = '/home/calibre'
+  data_dir = '/home/calibre'
 
   context 'The environment should be set up' do
-    %w(libtool fontconfig libxt6 libltdl7).each do |pkg|
+    %w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
       describe package(pkg) do
         it { should be_installed }
       end
     end
   end
 
-  context 'A calibre user should be created to run calibre' do
-    describe user('calibre') do
-      it { should exist }
-      # it should have the correct rights (used to run calibre server without root)'
-    end
-  end
-
   context 'A calibre group should be created to run calibre' do
     describe group('calibre') do
       it { should exist }
+    end
+  end
+
+  context 'A calibre user should be created to run calibre with proper homedir' do
+    # TODO check that user is system user
+    describe user('calibre') do
+      it { should exist }
+      it { should belong_to_group 'calibre' }
+      it { should have_home_directory home_dir }
+    end
+    describe file(home_dir) do
+      it { should be_directory }
     end
   end
 
@@ -44,16 +51,12 @@ describe 'Ebook Management Server' do
       it { should be_file }
     end
   end
-
-  context 'A default settings file should be created for calibre' do
-    describe file('/etc/default/calibre-server') do
-      it { should be_file }
-    end
-  end
-
-  context 'A calibre script should be created' do
-    describe file('/etc/init.d/calibre-server') do
-      it { should be_file }
+  
+  context 'A data directory for calibre owned by calibre:calibre should be created' do
+    describe file(data_dir) do
+      it { should be_directory }
+      it { should be_owned_by 'calibre' }
+      it { should be_grouped_into 'calibre' }
       it { should be_readable }
       it { should be_writable.by('owner') }
       it { should_not be_writable.by('group') }
@@ -62,16 +65,30 @@ describe 'Ebook Management Server' do
     end
   end
 
-  context 'Caliber should be set up as a service with default settings' do
+  context 'A calibre script should be created' do
+    describe file('/etc/init.d/calibre-server') do
+      it { should be_file }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+      it { should be_readable }
+      it { should be_writable.by('owner') }
+      it { should_not be_writable.by('group') }
+      it { should_not be_writable.by('others') }
+      it { should be_executable }
+    end
+  end
+
+  context 'Caliber should be set up as a service and running' do
     describe service('calibre-server') do
       it { should be_enabled }
+      it { should be_running }
     end
   end
 
   context 'Caliber should run with the calibre user' do
     describe process('calibre-server') do
       it { should be_running }
-      its('user') { should == 'root' }
+      its('user') { should == 'calibre' }
     end
   end
 

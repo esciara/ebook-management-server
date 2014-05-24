@@ -8,14 +8,18 @@
 # All rights reserved - Do Not Redistribute
 #
 
-%w(libtool fontconfig libxt6 libltdl7).each do |pkg|
+%w(libtool fontconfig libxt6 libltdl7 vim).each do |pkg|
   package pkg
 end
 
-user 'calibre'
+group 'calibre'
 
-group 'calibre' do
-  members 'calibre'
+user 'calibre' do
+  comment 'User to Run Calibre'
+  home '/home/calibre'
+  system true
+  supports :manage_home => true
+  gid 'calibre'
 end
 
 remote_file '/usr/local/bin/calibre-linux-installer.py' do
@@ -25,12 +29,6 @@ remote_file '/usr/local/bin/calibre-linux-installer.py' do
 end
 
 execute '/usr/local/bin/calibre-linux-installer.py'
-
-directory '/var/calibre' do
-  owner 'root'
-  group 'root'
-  mode '0644'
-end
 
 service 'calibre-server' do
   supports :restart => true
@@ -43,12 +41,4 @@ cookbook_file '/etc/init.d/calibre-server' do
   mode '0755'
   notifies :enable, 'service[calibre-server]'
   notifies :start, 'service[calibre-server]'
-end
-
-template '/etc/default/calibre-server' do
-  source 'calibre-server.config.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  notifies :restart, 'service[calibre-server]'
 end
