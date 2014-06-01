@@ -8,7 +8,6 @@ lang = 'en_US.utf8'
 lc_all = 'en_US.utf8'
 language = 'en_US.utf8'
 
-
 describe 'ebook-management-server::default' do
   let(:chef_run) do
     runner = ChefSpec::Runner.new(
@@ -18,7 +17,7 @@ describe 'ebook-management-server::default' do
     runner.converge('recipe[ebook-management-server::default]')
   end
 
-  # Stubbing for test of 'Update Locale' 
+  # Stubbing for test of 'Update Locale'
   let(:etc_default_locale_content) do
     <<-CONTENT
     LANG="en_US.utf8"
