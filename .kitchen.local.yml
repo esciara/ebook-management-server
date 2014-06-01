@@ -39,27 +39,32 @@ else
   end
 %>
 ---
-  <% if not proxy_running? %>
-    <% puts ".kitchen.local.yml : Proxy *NOT* running. Skipping proxy setup." %>
-  <% else %>
-    <% puts ".kitchen.local.yml : Proxy running on http_proxy_url=#{http_proxy_url} => using it." %>
-
 driver:
+  <% puts ".kitchen.local.yml : driver - using homemade Vagrantfile.erb ."%>
+  vagrantfile_erb: Vagrantfile.erb
+  <% if not proxy_running? %>
+    <% puts ".kitchen.local.yml : driver - Proxy *NOT* running. Skipping proxy setup." %>
+  <% else %>
+    <% puts ".kitchen.local.yml : driver - Proxy running on http_proxy_url=#{http_proxy_url} => using it." %>
   http_proxy: <%= http_proxy_url %>
   https_proxy: <%= http_proxy_url %>
   provision_command: "env http_proxy=<%= http_proxy_url %> bash -c 'curl -L http://www.getchef.com/chef/install.sh | bash'"
-  vagrantfile_erb: Vagrantfile.erb
+  <% end %>
 
 provisioner:
+  <% puts ".kitchen.local.yml : provisioner - changing chef_omnibus_url to use http (not https)."%>
   chef_omnibus_url: http://www.getchef.com/chef/install.sh
+  <% if not proxy_running? %>
+    <% puts ".kitchen.local.yml : provisioner - Proxy *NOT* running. Skipping proxy setup." %>
+  <% else %>
+    <% puts ".kitchen.local.yml : provisioner - Proxy running on http_proxy_url=#{http_proxy_url} => using it." %>
   solo_rb:
     http_proxy: <%= http_proxy_url %>
     https_proxy: <%= http_proxy_url %>
-    no_proxy: localhost,127.0.0.1
+    no_proxy: localhost, 127.0.0.1,127.0.0.1:8080,*.chef-demo.com,192.168.*
   client_rb:
     http_proxy: <%= http_proxy_url %>
     https_proxy: <%= http_proxy_url %>
-    no_proxy: localhost,127.0.0.1
+    no_proxy: localhost,127.0.0.1,127.0.0.1:8080,*.chef-demo.com,192.168.*
   <% end %>
 <% end # End if @in_travis_env %>
-
