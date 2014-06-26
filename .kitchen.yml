@@ -12,8 +12,6 @@ driver:
   digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
 <% else %>
   name: vagrant
-  customize:
-    memory: 1024
 <% end %>
 
 provisioner:
