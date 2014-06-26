@@ -1,5 +1,5 @@
-Master branch: [![Build Status](https://travis-ci.org/esciara/ebook-management-server.png?branch=master)]
-(https://travis-ci.org/esciara/ebook-management-server)
+Master branch: [![Build Status](https://travis-ci.org/xebia-france/ebook-management-server.png?branch=master)]
+(https://travis-ci.org/xebia-france/ebook-management-server)
 # Ebook Management Server cookbook
 
 
