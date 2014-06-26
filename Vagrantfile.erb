@@ -4,11 +4,14 @@ Vagrant.configure("2") do |c|
 
   puts "Using local template Vagrantfile.erb"
 
-  puts "Vagrantfile.erb : using vagrant-cachier plugin for caching if present"
+  puts "Vagrantfile.erb : using vagrant-cachier plugin for caching if present."
   if Vagrant.has_plugin?("vagrant-cachier")
+    puts "Vagrantfile.erb : vagrant-cachier plugin installed => using it."
     # Configure cached packages to be shared between instances of the same base box.
     # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
     c.cache.scope = :box
+  else
+    puts "Vagrantfile.erb : vagrant-cachier *NOT* plugin installed."
   end
 
 <% if config[:vm_hostname] %>
