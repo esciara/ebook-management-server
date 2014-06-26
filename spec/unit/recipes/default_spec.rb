@@ -26,8 +26,8 @@ describe 'ebook-management-server::default' do
   end
 
   before do
-    IO.stub(:read).and_call_original
-    IO.stub(:read).with('/etc/default/locale').and_return(etc_default_locale_content)
+    allow(IO).to receive_message_chain(:read).and_call_original
+    allow(IO).to receive_message_chain(:read).with('/etc/default/locale').and_return(etc_default_locale_content)
   end
 
   it 'Sets the system locale properly' do
